@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Día a Día: organizá tus tareas, agenda y objetivos en un solo lugar.">
+  <title>Inicio · Día a Día</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <svg class="iconos-definicion" aria-hidden="true">
+    <symbol id="i-inicio" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5M5 10v10h14V10M10 20v-6h4v6"/></symbol>
+    <symbol id="i-dia" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-tareas" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></symbol>
+    <symbol id="i-estadisticas" viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></symbol>
+    <symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-flecha" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 3 3 5-6"/></symbol>
+    <symbol id="i-editar" viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/></symbol>
+    <symbol id="i-papelera" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13h12l1-13M9 7V4h6v3"/></symbol>
+    <symbol id="i-buscar" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4 4"/></symbol>
+  </svg>
+
+  <div class="app">
+    <nav class="navegacion" aria-label="Secciones principales">
+      <div class="marca">
+        <span class="marca-logo">D</span>
+        <span class="marca-nombre">Día a Día</span>
+      </div>
+      <ul class="navegacion-lista">
+        <li><button type="button" class="nav-boton" data-ir="inicio" aria-current="page"><svg class="icono"><use href="#i-inicio"/></svg><span>Inicio</span></button></li>
+        <li><button type="button" class="nav-boton" data-ir="dia"><svg class="icono"><use href="#i-dia"/></svg><span>Mi día</span></button></li>
+        <li><button type="button" class="nav-boton" data-ir="tareas"><svg class="icono"><use href="#i-tareas"/></svg><span>Tareas</span></button></li>
+        <li><button type="button" class="nav-boton" data-ir="calendario"><svg class="icono"><use href="#i-calendario"/></svg><span>Calendario</span></button></li>
+        <li><button type="button" class="nav-boton" data-ir="estadisticas"><svg class="icono"><use href="#i-estadisticas"/></svg><span>Estadísticas</span></button></li>
+      </ul>
+    </nav>
+
+    <main class="contenido">
+      <section class="seccion" id="seccion-inicio" data-seccion="inicio">
+        <header class="cabecera">
+          <div class="cabecera-texto">
+            <p class="fecha" id="fecha-actual"></p>
+            <h1 class="saludo" id="titulo-inicio"><span id="saludo">¡Hola!</span></h1>
+            <p class="subtitulo" id="mensaje-motivador"></p>
+          </div>
+          <button type="button" class="boton boton-primario" data-accion="agregar-tarea"><svg class="icono"><use href="#i-mas"/></svg>Agregar tarea</button>
+        </header>
+
+        <div class="grilla-inicio">
+          <article class="tarjeta tarjeta-progreso">
+            <h2 class="tarjeta-titulo">Progreso del día</h2>
+            <div class="progreso-cifra"><span class="progreso-porcentaje" id="progreso-porcentaje">0%</span></div>
+            <p class="progreso-detalle" id="progreso-detalle">Todavía no hay tareas para hoy</p>
+            <div class="barra" id="barra-progreso" role="progressbar" aria-label="Progreso del día" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="barra-relleno" id="barra-relleno"></div></div>
+            <dl class="metricas">
+              <div class="metrica"><dt>Completadas</dt><dd id="contador-completadas">0</dd></div>
+              <div class="metrica"><dt>Pendientes</dt><dd id="contador-pendientes">0</dd></div>
+            </dl>
+          </article>
+
+          <article class="tarjeta">
+            <h2 class="tarjeta-titulo">Próxima actividad</h2>
+            <div id="proxima-actividad"></div>
+          </article>
+
+          <article class="tarjeta tarjeta-ancha">
+            <div class="tarjeta-cabecera">
+              <h2 class="tarjeta-titulo">Próximas tareas</h2>
+              <button type="button" class="boton-enlace" data-ir="dia">Ver agenda completa <svg class="icono"><use href="#i-flecha"/></svg></button>
+            </div>
+            <ul class="lista-tareas" id="lista-proximas" hidden></ul>
+            <div class="estado-vacio" id="estado-vacio">
+              <span class="estado-vacio-icono"><svg class="icono"><use href="#i-check"/></svg></span>
+              <h3>Tu día está libre</h3>
+              <p>Todavía no tenés tareas para hoy. Creá la primera y empezá a organizarte.</p>
+              <button type="button" class="boton boton-primario" data-accion="agregar-tarea"><svg class="icono"><use href="#i-mas"/></svg>Crear mi primera tarea</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="seccion" id="seccion-dia" data-seccion="dia" hidden>
+        <header class="cabecera-simple">
+          <p class="eyebrow">TU AGENDA</p>
+          <h1 class="titulo-seccion" tabindex="-1">Mi día</h1>
+          <p class="subtitulo">Tus actividades ordenadas por horario.</p>
+        </header>
+        <div class="toolbar">
+          <label class="campo-inline" for="fecha-dia">Elegí un día <input type="date" id="fecha-dia"></label>
+          <button class="boton boton-secundario" type="button" data-accion="hoy">Volver a hoy</button>
+          <button class="boton boton-primario" type="button" data-accion="agregar-tarea"><svg class="icono"><use href="#i-mas"/></svg>Agregar tarea</button>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-cabecera"><h2 class="tarjeta-titulo" id="titulo-agenda-dia">Agenda del día</h2><span class="contador-chip" id="contador-agenda">0 tareas</span></div>
+          <ul class="lista-completa" id="lista-dia"></ul>
+          <div class="mensaje-vacio" id="vacio-dia">No hay tareas para esta fecha. Aprovechá para planificar tu día.</div>
+        </div>
+      </section>
+
+      <section class="seccion" id="seccion-tareas" data-seccion="tareas" hidden>
+        <header class="cabecera-simple">
+          <p class="eyebrow">ORGANIZACIÓN</p>
+          <h1 class="titulo-seccion" tabindex="-1">Tareas</h1>
+          <p class="subtitulo">Creá, editá y organizá todas tus tareas.</p>
+        </header>
+        <div class="toolbar toolbar-tareas">
+          <label class="busqueda" for="buscador"><svg class="icono"><use href="#i-buscar"/></svg><input type="search" id="buscador" placeholder="Buscar tareas..." autocomplete="off"></label>
+          <select id="filtro-estado" aria-label="Filtrar por estado"><option value="todas">Todos los estados</option><option value="pendientes">Pendientes</option><option value="completadas">Completadas</option></select>
+          <select id="filtro-prioridad" aria-label="Filtrar por prioridad"><option value="todas">Todas las prioridades</option><option value="alta">Prioridad alta</option><option value="media">Prioridad media</option><option value="baja">Prioridad baja</option></select>
+          <button type="button" class="boton boton-primario" data-accion="agregar-tarea"><svg class="icono"><use href="#i-mas"/></svg>Nueva tarea</button>
+        </div>
+        <div class="resumen-lista" id="resumen-tareas"></div>
+        <div class="tarjeta">
+          <ul class="lista-completa" id="lista-todas"></ul>
+          <div class="mensaje-vacio" id="vacio-tareas">Todavía no hay tareas. Creá la primera para empezar a organizarte.</div>
+        </div>
+      </section>
+
+      <section class="seccion" id="seccion-calendario" data-seccion="calendario" hidden>
+        <header class="cabecera-simple">
+          <p class="eyebrow">PLANIFICACIÓN</p>
+          <h1 class="titulo-seccion" tabindex="-1">Calendario</h1>
+          <p class="subtitulo">Mirá tu mes de un vistazo.</p>
+        </header>
+        <div class="tarjeta calendario-tarjeta">
+          <div class="calendario-cabecera">
+            <button type="button" class="boton-icono" id="mes-anterior" aria-label="Mes anterior">‹</button>
+            <h2 id="mes-anio">Mes año</h2>
+            <button type="button" class="boton-icono" id="mes-siguiente" aria-label="Mes siguiente">›</button>
+            <button type="button" class="boton boton-secundario" data-accion="mes-actual">Hoy</button>
+          </div>
+          <div class="calendario-grid" id="calendario-grid" aria-label="Calendario mensual"></div>
+        </div>
+        <div class="tarjeta tareas-fecha-tarjeta">
+          <div class="tarjeta-cabecera"><h2 class="tarjeta-titulo" id="titulo-tareas-fecha">Tareas del día</h2><button type="button" class="boton-enlace" data-accion="agregar-tarea-fecha">Agregar tarea <svg class="icono"><use href="#i-flecha"/></svg></button></div>
+          <ul class="lista-completa" id="lista-fecha"></ul>
+          <div class="mensaje-vacio" id="vacio-fecha">Seleccioná un día para consultar sus tareas.</div>
+        </div>
+      </section>
+
+      <section class="seccion" id="seccion-estadisticas" data-seccion="estadisticas" hidden>
+        <header class="cabecera-simple">
+          <p class="eyebrow">TU CONSTANCIA</p>
+          <h1 class="titulo-seccion" tabindex="-1">Estadísticas</h1>
+          <p class="subtitulo">Cómo viene tu constancia.</p>
+        </header>
+        <div class="stats-grid">
+          <article class="tarjeta stat-card"><span class="stat-label">Total de tareas</span><strong id="stat-total">0</strong><span class="stat-sub">Tareas registradas</span></article>
+          <article class="tarjeta stat-card"><span class="stat-label">Completadas</span><strong id="stat-completadas">0</strong><span class="stat-sub">Objetivos cumplidos</span></article>
+          <article class="tarjeta stat-card"><span class="stat-label">Pendientes</span><strong id="stat-pendientes">0</strong><span class="stat-sub">Por hacer</span></article>
+          <article class="tarjeta stat-card"><span class="stat-label">Cumplimiento</span><strong id="stat-porcentaje">0%</strong><span class="stat-sub">Sobre todas tus tareas</span></article>
+        </div>
+        <div class="stats-detalle-grid">
+          <article class="tarjeta"><h2 class="tarjeta-titulo">Últimos 7 días</h2><p class="subtitulo stats-intro">Tareas completadas por fecha.</p><div class="grafico-semanal" id="grafico-semanal"></div></article>
+          <article class="tarjeta"><h2 class="tarjeta-titulo">Por categoría</h2><p class="subtitulo stats-intro">Cómo se distribuyen tus tareas.</p><div id="grafico-categorias" class="grafico-categorias"></div></article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="modal" id="modal-tarea" aria-labelledby="modal-titulo">
+    <form id="form-tarea" novalidate>
+      <div class="modal-cabecera">
+        <div><p class="eyebrow">ORGANIZÁ TU TIEMPO</p><h2 id="modal-titulo">Nueva tarea</h2></div>
+        <button type="button" class="boton-icono" data-accion="cerrar-modal" aria-label="Cerrar">×</button>
+      </div>
+      <label class="campo" for="tarea-titulo">Título <span>*</span><input id="tarea-titulo" name="titulo" type="text" maxlength="100" placeholder="Ej. Estudiar programación" required></label>
+      <label class="campo" for="tarea-descripcion">Descripción <small>Opcional</small><textarea id="tarea-descripcion" name="descripcion" rows="3" maxlength="500" placeholder="Agregá algún detalle..."></textarea></label>
+      <div class="form-grid">
+        <label class="campo" for="tarea-fecha">Fecha <span>*</span><input id="tarea-fecha" name="fecha" type="date" required></label>
+        <label class="campo" for="tarea-categoria">Categoría<select id="tarea-categoria" name="categoria"><option>Personal</option><option>Estudio</option><option>Trabajo</option><option>Salud</option><option>Hogar</option><option>Otro</option></select></label>
+        <label class="campo" for="tarea-hora-inicio">Hora de inicio<input id="tarea-hora-inicio" name="horaInicio" type="time"></label>
+        <label class="campo" for="tarea-hora-fin">Hora de fin<input id="tarea-hora-fin" name="horaFin" type="time"></label>
+        <label class="campo campo-completo" for="tarea-prioridad">Prioridad<select id="tarea-prioridad" name="prioridad"><option value="media">Media</option><option value="alta">Alta</option><option value="baja">Baja</option></select></label>
+      </div>
+      <p class="error-formulario" id="error-formulario" role="alert" hidden></p>
+      <div class="modal-acciones"><button type="button" class="boton boton-secundario" data-accion="cerrar-modal">Cancelar</button><button type="submit" class="boton boton-primario" id="guardar-tarea">Guardar tarea</button></div>
+    </form>
+  </dialog>
+
+  <div class="avisos" id="avisos" role="status" aria-live="polite"></div>
+</body>
+</html>
